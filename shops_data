@@ -1,0 +1,12 @@
+{
+  "cityName": "Армавир",
+  "shopAddress": "Быкова, 1",
+  "shopType": "1",
+  "latitude": "123",
+  "longitude": "341"},
+  {
+    "cityName": "Армавир",
+    "supersLink": "http:\\google.com",
+    "gipersLink:": "https:\\google.com"
+  }
+}
