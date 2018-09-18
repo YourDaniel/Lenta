@@ -14,4 +14,4 @@ print(now)
 %S - seconds
 '''
 
-print(now.strftime("The file has created at %H:%M on %d.%m.%y"))
+print(now.strftime("The file has created at %H:%M on %d.%m.%Y"))

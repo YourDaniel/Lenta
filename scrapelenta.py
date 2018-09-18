@@ -4,8 +4,10 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 import os
 import time
-
+from datetime import datetime
+now = datetime.today()
 # TODO: Add location parsing
+
 
 def clear():
     os.system('cls')
@@ -27,7 +29,8 @@ def get_link_text(f_link):
 
 # TODO: Add parsing city list from the site instead of a file
 # TODO: Write into .JSON fine instead of .txt
-file = open('lentascrape.txt', 'a')
+file = open('lentascrape.txt', 'w')
+file.write(now.strftime("The file has created at %H:%M on %d.%m.%Y"))
 citylist = open('citylist.txt', 'r')
 cities = []
 
@@ -46,14 +49,28 @@ for cityName in cities:
     city = driver.find_element_by_link_text(cityName)
     city.click()
     time.sleep(2)
+
+    # Finding links to the map in footer
     try:
         catalogue = driver.find_element_by_link_text('Гипермаркеты')
         catalogue.click()
     except NoSuchElementException:
         catalogue = driver.find_element_by_link_text('Магазины')
         catalogue.click()
-    time.sleep(4)
-    table = driver.find_elements_by_tag_name('table')
+    time.sleep(2)
+
+    # Trying to find address list. If not found: try to get a map page from links in nav menu
+    try:
+        table = driver.find_elements_by_tag_name('table')
+    except NoSuchElementException:
+        try:
+            catalogue = driver.find_element_by_link_text('ГИПЕРМАРКЕТЫ')
+            catalogue.click()
+            table = driver.find_elements_by_tag_name('table')
+        except NoSuchElementException:
+            catalogue = driver.find_element_by_link_text('МАГАЗИНЫ')
+            catalogue.click()
+            table = driver.find_elements_by_tag_name('table')
 
     # Проверка на наличие легенды с точками. Если в массиве два значения, города - во второй таблице
     # TODO: Rework shop type parsing (from <a> instead of <div>)

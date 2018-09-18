@@ -1,10 +1,7 @@
 from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 import os
 import time
-
 
 def clear():
     os.system('cls')
@@ -28,11 +25,20 @@ driver = webdriver.Chrome()
 driver.maximize_window()
 driver.get('http://www.lenta.com')
 
-cityName = 'Альметьевск'
+cityName = 'Ачинск'
+
 print(f'Test City. {cityName}')
 city = driver.find_element_by_link_text(cityName)
 city.click()
 time.sleep(2)
+
+'''
+# GET ALL MENU BUTTONS
+menu = driver.find_elements_by_class_name('main-menu__link')
+for button in menu:
+    print(button.get_attribute('href'))
+    print(button.text)'''
+
 
 try:
     catalogue = driver.find_element_by_link_text('Гипермаркеты')
@@ -43,8 +49,22 @@ except NoSuchElementException:
     print(catalogue.get_attribute('href'))
     catalogue.click()
 
+try:
+    table = driver.find_elements_by_tag_name('table')
+except NoSuchElementException:
+    try:
+        catalogue = driver.find_element_by_link_text('ГИПЕРМАРКЕТЫ')
+        catalogue.click()
+        table = driver.find_elements_by_tag_name('table')
+    except NoSuchElementException:
+        catalogue = driver.find_element_by_link_text('МАГАЗИНЫ')
+        catalogue.click()
+        table = driver.find_elements_by_tag_name('table')
 
-table = driver.find_elements_by_tag_name('table')
+A = driver.find_elements_by_tag_name('script')
+print(A[3].text)
+
+
 if len(table) == 0:
     catalogue = driver.find_element_by_link_text('Гипермаркеты')
     catalogue.click()
